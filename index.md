@@ -20,6 +20,16 @@ Syntax highlighted code block
 
 1. Numbered
 2. List
+ESTRUTURA DO SITE
+                        - PÁGINA INICIAL
+                        - PARCEIROS
+                        - SOBRE
+                        - SERVIÇOS
+                        - CONTATO
+                        - RODAPÉ
+                    - INTEGRAÇÃO C/ INSTAGRAM
+                    - INTEGRAÇÃO C/ COMENTÁRIOS DO GOOGLE
+                      
 
 **Bold** and _Italic_ and `Code` text
 
