@@ -49,6 +49,16 @@ ESTRUTURA DO SITE
                           - POSTAGEM GOOGLE
                         -MENSAGEM GOOGLE ALLO
                         
+                        PAGESPEED
+                        SITEMAP
+                        ROBOT
+                        WEBMASTER
+                        SSL
+                        
+                        WEBMAIL
+                        PAGAMENTO
+                        CONTRATO
+                        
                         
                         GOOGLE SUITE
                           AGENDA
