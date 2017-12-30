@@ -21,18 +21,55 @@ Syntax highlighted code block
 1. Numbered
 2. List
 ESTRUTURA DO SITE
+
+  - NOME DA EMPRESA
+  - CATEGORIA
+  - TELEFONE
+  - SITE
+  - EMAIL
+  -ENDEREÇO
                         - PÁGINA INICIAL
                         - PARCEIROS
                         - SOBRE
                         - SERVIÇOS
                         - CONTATO
                         - RODAPÉ
+                        - SLIDER
                     - INTEGRAÇÃO C/ INSTAGRAM
+                        - INSTAFEED GALERIA
+                        - FACEBOOK
                     - INTEGRAÇÃO C/ DETALHES DO GOOGLE
                       - ENVIAR UM COMENTÁRIO
                       - ENVIAR UMA PERGUNTA
                       - ENVIAR FOTOS
-                      - 
+                          - COMPARTILHADAS COMIGO
+                      - HORÁRIO
+                      - BREVE DESCRIÇÃO
+                      - BLOG
+                          - POSTAGEM GOOGLE
+                        -MENSAGEM GOOGLE ALLO
+                        
+                        
+                        GOOGLE SUITE
+                          AGENDA
+                          EMAIL
+                          DRIVE
+                          
+                          
+                      - ANALITYCS
+                      - TAGMANAGER
+                      - ADWORDS
+                      - MAPS
+                      
+                      - FACEBOOK
+                        - SERVIÇOS
+                        - LOJAS
+                        - FOTO/VIDEO CAPA
+                        - FOTO/VIDEO PROFILE
+                      - INSTAGRAM
+                      
+                      
+                      
                       
 
 **Bold** and _Italic_ and `Code` text
