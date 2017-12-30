@@ -28,7 +28,11 @@ ESTRUTURA DO SITE
                         - CONTATO
                         - RODAPÉ
                     - INTEGRAÇÃO C/ INSTAGRAM
-                    - INTEGRAÇÃO C/ COMENTÁRIOS DO GOOGLE
+                    - INTEGRAÇÃO C/ DETALHES DO GOOGLE
+                      - ENVIAR UM COMENTÁRIO
+                      - ENVIAR UMA PERGUNTA
+                      - ENVIAR FOTOS
+                      - 
                       
 
 **Bold** and _Italic_ and `Code` text
