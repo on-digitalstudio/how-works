@@ -79,7 +79,61 @@ ESTRUTURA DO SITE
                       - INSTAGRAM
                       
                       
+                      ---- ADVOGADO / ESCRITÓRIO
+                      - EXPLORAR COTAÇÕES
                       
+                      - PROPOSTAS
+                        - ENVIADAS
+                        - ACEITAS
+                        - ENCERRADAS
+                        
+                      - SOLICITAÇÕES
+                        - SOLICITAÇÃO
+                          - CADASTRO
+                          - LISTA DE COTAÇÕES
+                        
+                      - RELATÓRIOS
+                      
+                      - MEU ESCRITÓRIO
+                        - SITE
+                        - ENDEREÇO
+                        
+                      - MINHAS INFORMAÇÕES (ADVOGADO - OAB) TYPE_USER: 1
+                        - CADASTRO DE ÁREAS
+                          - SERVIÇOS - VALOR MÉDIO
+                        
+                      - CONFIGURAÇÕES
+                        - NOTIFICAÇÕES
+                        
+                      - AJUDA
+                      
+                      ---- CLIENTE
+                      - EXPLORAR ADVOGADO / ESCRITÓRIO 
+                      
+                      - SOLICITAÇÕES
+                        - SOLICITAÇÃO
+                          - CADASTRO
+                          - LISTA DE COTAÇÕES
+                        
+                      - MINHAS INFORMAÇÕES (CLIENTE) TYPE_USER: 2
+                        - INFORMAÇÕES PESSOAIS
+                        
+                      - CONFIGURAÇÕES
+                        - NOTIFICAÇÕES
+                        
+                      - AJUDA
+                        
+                        
+                        ------
+                        Solicite Propostas
+                        Simples e rápido, leva apenas 2 minutos
+
+                        Negocie
+                        Esclareça detalhes e receba propostas
+
+                        Escolha
+                        Escolha o melhor fornecedor e contrate sem intermediários
+                        
                       
 
 **Bold** and _Italic_ and `Code` text
