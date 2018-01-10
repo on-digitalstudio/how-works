@@ -134,6 +134,16 @@ ESTRUTURA DO SITE
                         Escolha
                         Escolha o melhor fornecedor e contrate sem intermediários
                         
+                        Blog
+                        Perguntas frequentes
+                        planos e preços
+                        Política de Privacidade
+                        Termos de Uso
+                        Facebook
+                        Instagram
+                        Ajuda - Tutorial
+                        Integrar com Jivochat
+                        
                       
 
 **Bold** and _Italic_ and `Code` text
