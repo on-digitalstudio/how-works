@@ -152,7 +152,10 @@ INSERT INTO couser.on_exam_user_question (NEW.id_exam_user, id_exam_user_questio
 --	1 - APROVADO
 --	2 - PENDENTE
 --		SE FOI APROVADO: INSERT INTO TABLE_CERTIFICADO ID_COURSE AND ID_USER - GERA CERTIFICADO  
-
+-- se for 0 - botão para limpar as respostas
+-- se for 1 - botão para pegar o certificado
+-- se for 2 - botão para fazer a prova
+-- se não tiver registro - botão para fazer a prova
 
  FOR v_i IN SELECT unnest(string_to_array(REPLACE(REPLACE(p_conteudo_remessa, CHR(13), ';'), CHR(10), ''), ';')) LOOP             
             v_loop := v_loop+1;	            
