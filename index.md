@@ -144,7 +144,75 @@ ESTRUTURA DO SITE
                         Ajuda - Tutorial
                         Integrar com Jivochat
                         
-                      
+-- SELECT PARA LOCALIZAR TODAS AS QUESTÕES DE UMA PROVA E INSERIR NA TABELA
+INSERT INTO couser.on_exam_user_question (NEW.id_exam_user, id_exam_user_question) SELECT id_exam_user_question FROM couser.on_exam_question WHERE id_exam = NEW.id_exam;
+
+-- FUNCTION PARA CALCULAR SE O ALUNO FOI:
+--	0 - REPROVADO
+--	1 - APROVADO
+--		SE FOI APROVADO: INSERT INTO TABLE_CERTIFICADO ID_COURSE AND ID_USER - GERA CERTIFICADO  
+
+
+ FOR v_i IN SELECT unnest(string_to_array(REPLACE(REPLACE(p_conteudo_remessa, CHR(13), ';'), CHR(10), ''), ';')) LOOP             
+            v_loop := v_loop+1;	            
+            -- VERIFICA SE É O BANCO DO BRASIL NO LAYOUT CNAB400
+            --IF (substr(v_i.unnest::text, 12, 8) <> 'COBRANCA'::text OR substr(v_i.unnest::text, 77, 18) <> '001BANCO DO BRASIL'::text or length(cast (v_i.unnest::text as text)) <> '400') AND v_loop = 1  THEN																		
+            IF (substr(v_i.unnest::text, 12, 8) <> 'COBRANCA'::text OR substr(v_i.unnest::text, 77, 18) <> '001BANCO DO BRASIL'::text) AND v_loop = 1  THEN
+               RAISE EXCEPTION '0001';   
+
+
+        try {
+            if ($_FILES['file']['type'] != 'text/xml') {
+                $result = array(status => 'error', error => $this->errorApplication(00001), file => $file);
+            } else {
+                $result = $this->errorPermission($file);
+            }
+        } catch (Exception $exc) {   
+            $result = array(status => 'error', error => $this->errorException($exc->getCode(), $exc->getMessage()), file => $file);
+        }
+
+
+
+    public function errorException($code = null, $message = null) {
+        $result = array(message => 'Erro: Desconhecido', button => true);
+        
+        switch ($code) {
+            case 2200:
+                $result = array(message => 'Erro: Estrutura do arquivo inválida', button => true);
+                break;
+
+            case 22004:
+                $result = array(message => 'Erro: A estrutura do arquivo não possui todas as informações necessárias para completar está ação', button => true);
+                break;
+
+            case 23505:
+                $result = array(message => 'Erro: O arquivo não foi enviado, pois já foi armazenado em sua nuvem', button => false);
+                break;
+
+            default:
+                $result = $this->errorDB($message);
+                break;
+        }
+        
+        return $result;
+    }
+    
+    public function errorDB($message = null) {
+        $result = array(message => 'Erro: Desconhecido', button => true);
+        
+        switch (intval(substr($message, 44, 4))) {
+            case 0003:
+                $result = array(message => 'Erro: O arquivo não foi enviado, pois o <b>CNPJ/CPF</b> encontrado no <b>XML</b>, não representa nenhum <b>CNPJ/CPF</b> desta conta', button => false);  
+                break;
+
+            default:
+                $result = array(message => 'Erro: Não foi possível encontrar o problema', button => true);
+                break;
+        }
+        
+        return $result;
+    }
+    
 
 **Bold** and _Italic_ and `Code` text
 
