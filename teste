@@ -1,0 +1,310 @@
+<?php
+
+class UpController extends Zend_Controller_Action {
+
+    public function init() {
+        $this->setLayout();
+    }
+    
+    public function indexAction() {
+        
+        $this->view->headScript()
+                ->prependFile($this->view->baseUrl('public/up.js'));
+    }
+    
+    
+    public function cacheAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        
+        $_SESSION['cache'] = $this->_request->getParam('q');
+        echo Zend_Json::encode(array(data => ($_SESSION['cache'] == null ? [] : $_SESSION['cache'])));
+    }
+    
+    public function ajaxAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        
+        Zend_Loader::loadClass("Up");
+        $model = new Up();
+        
+        $param = array();
+        
+        foreach ($_SESSION['cache'] as $value) {
+            if ($value['name'] == 'local') {
+                $local = $value['value'];
+            }
+            
+            if ($value['name'] == 'age') {
+                array_push($param, "'" . $value["value"] . ",{$local}'");
+            }
+        }
+        
+        $array = $model->view_budget($param);
+        
+        foreach ($array as $value) {
+            $result[] = array(
+                $value['id_variable'],
+                $value['nome_product_service'],
+                $value['descricao_product_service'],
+                $value['nome_grid'],
+                $value['valor_grid']
+            );
+        }
+        
+        echo Zend_Json::encode(array(data => ($result == null ? [] : $result)));
+    }
+
+}
+
+
+
+
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+class Up extends Zend_Db_Table {
+    
+    protected $_name = 'on_product_service';
+    protected $_primary = 'id_product_service';
+    protected $_rowClass = 'Up';
+    
+    protected function _setupDatabaseAdapter() {
+        $this->_db = Zend_Registry::get("up");
+    }
+    
+    public function view_budget($q = null) {
+        $sql =  $this->getAdapter()->select()->from('view_budget');
+        
+        if ($q != '') {
+            $sql->where('id_variable IN(?)', implode($q, ','));
+        }
+        
+        return $this->getAdapter()->fetchAll($sql); 
+    }
+    
+}
+
+
+
+
+
+
+
+var access = new Access();
+
+$(document).ready(function () {
+
+    $('.ui.drop1').dropdown().dropdown('set selected', JSON.parse(Cookies.get('form'))[1].value);
+
+
+    $('.more-user').on('click', function () {
+        var dropdown = $('<tr />', {
+            html: '<tr>\n\
+                                        <td class="collapsing">\n\
+                                            <i uk-icon="user"></i>\n\
+                                        </td>\n\
+                                        <td>\n\
+                                            <select class="ui dropdown" name="age">\n\
+                                                <option value="1" selected="">00 - 18</option>\n\
+                                                <option value="2">19 - 60</option>\n\
+                                            </select>\n\
+                                        </td>\n\
+                                        <td class="collapsing">\n\
+                                            <i class="minus-user" uk-icon="close"></i>\n\
+                                        </td>\n\
+                                    </tr>'
+        }).appendTo('.box-user');
+
+        $('.ui.dropdown').dropdown();
+    });
+
+    $(document).on('click', '.minus-user', function () {
+        $(this).closest('tr').remove();
+    });
+
+    var table = $('.table-up').DataTable({
+        dom: '<"H"lpri>t<"F"ip>',
+        lengthMenu: [
+            [10, 25, 50, -1],
+            ['Exibir 10 por página', 'Exibir 25 por página', 'Exibir 50 por página', 'Exibir tudo por página']
+        ],
+        rowGroup: {
+            startRender: function ( rows, group, a ) {
+                var avg = rows
+                    .data()
+                    .pluck(2)
+                    .reduce( function (a, b) {
+                        return b;
+                    }, '');
+                
+                return group + '<br />' + avg;
+            },
+            endRender: function ( rows, group ) {
+                var avg = rows
+                    .data()
+                    .pluck(4)
+                    .reduce( function (a, b) {
+                        return a + b.replace(/[^\d]/g, '') * 1;
+                    }, 0);
+ 
+                return 'Total: ' + $.fn.dataTable.render.number(',', '.', 0, 'R$ ').display( avg );
+            },
+            dataSrc: 1
+        },
+        columnDefs: [
+            {
+                targets: 0,
+                visible: false
+            },
+            {
+                targets: 1,
+                visible: false
+            },
+            {
+                targets: 2,
+                visible: false
+            },
+            {
+                className: 'uk-text-right',
+                targets: 3
+            },
+            {
+                className: 'uk-text-right collapsing',
+                targets: 4
+            }
+        ],
+        select: {
+            style: 'os'
+        },
+        order: [[4, 'desc']]
+    });
+
+    var form = $('.form-up').submit(function (event) {
+        return false;
+    }).form({
+        onSuccess: function () {
+            
+             $.ajax({
+                type: 'POST',
+                url: access.getURL() + 'up/cache',
+                data: {q: form.serializeArray()},
+                beforeSend: function (xhr) {
+            Cookies.set('form', form.serializeArray());
+                },
+                success: function (data, textStatus, jqXHR) {
+                    table.ajax.url( access.getURL() + 'up/ajax' ).load();
+                }
+            });
+            
+            return false;
+        }
+    });
+
+    var user = 0;
+    $.each(JSON.parse(Cookies.get('form')), function (i, v) {
+        if (v.name === 'local') {
+            form.form('set value', v.name, v.value);
+        }
+
+        if (v.name === 'age') {
+            user++;
+            if (user > 1) {
+                $('<tr />', {
+                    html: '<tr>\n\
+                                <td class="collapsing">\n\
+                                    <i uk-icon="user"></i>\n\
+                                </td>\n\
+                                <td>\n\
+                                    <select class="ui dropdown drop' + user + '" name="age">\n\
+                                        <option value="1" selected="">00 - 18</option>\n\
+                                        <option value="2">19 - 60</option>\n\
+                                    </select>\n\
+                                </td>\n\
+                                <td class="collapsing">\n\
+                                    <i class="minus-user" uk-icon="close"></i>\n\
+                                </td>\n\
+                            </tr>'
+                }).appendTo('.box-user');
+                $('.ui.drop' + user).dropdown().dropdown('set selected', v.value);
+            }
+        }
+    });
+
+});
+
+
+
+
+
+<section>
+    <div class="uk-block uk-block-muted">
+        <div class="uk-container uk-container-center uk-margin-large-top uk-margin-large-bottom">
+            <div class="uk-grid" data-uk-grid-margin>
+                <div class="uk-width-1-3@m">
+                    
+                    <form class="ui form form-up">
+                        <fieldset class="uk-fieldset">
+                            <table class="ui unstackable basic table">
+                                <tbody>
+                                    <tr>
+                                        <td>
+      <div class="ui radio checkbox">
+          <input class="uk-radio" type="radio" name="local" value="3"  checked="checked" /> <label>AP</label>
+      </div>
+                                        </td>
+                                        <td>
+      <div class="ui radio checkbox">
+          <input class="uk-radio" type="radio" name="local" value="4" /> <label>EM</label>
+      </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="ui unstackable basic table">
+                                <tbody class="box-user">
+                                    <tr>
+                                        <td class="collapsing">
+                                            <i uk-icon="user"></i>
+                                        </td>
+                                        <td>
+                                            <select class="ui dropdown drop1" name="age">
+                                                <option value="1" selected="">00 - 18</option>
+                                                <option value="2">19 - 60</option>
+                                            </select>
+                                        </td>
+                                        <td class="collapsing">
+                                            <i class="more-user" uk-icon="plus-circle"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                        <hr class="uk-divider-small" />
+                        <button class="ui primary button">Buscar Cotações</button>
+                    </form>
+                </div>
+                <div class="uk-width-expand">
+                    <table class="ui celled selectable table table-up" cellspacing="0" width="100%">
+                        <thead hidden>
+                            <tr>
+                                <th><i class="material-icons checkall">check_box_outline_blank</i></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
